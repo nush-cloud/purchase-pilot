@@ -19,6 +19,8 @@ Reduce shopping friction through a guided AI-powered experience.
 
 
 - created the initial landing page, navbar, and placeholder compare/saved pages
+- built a static chat interface with mock conversation data before integrating the AI backend
+- created reusable recommendation cards using mock product data to validate the shopping results experience before backend integration
 ## Outcome
 To be completed during development and testing.
 

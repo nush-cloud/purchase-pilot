@@ -2,6 +2,8 @@
 
 import AppNavbar from "@/components/layout/AppNavbar";
 import ChatLayout from "@/components/chat/ChatLayout";
+import ProductCard from "@/components/product/ProductCard";
+import { mockRecommendations } from "@/lib/mockData";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -42,6 +44,25 @@ export default function HomePage() {
               <ChatLayout />
             </Col>
           </Row>
+
+          <section className="mb-5">
+            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+              <div>
+                <h2 className="h2 fw-bold mb-1">Recommended Products</h2>
+                <p className="text-light-emphasis mb-0">
+                  Mock recommendation cards for the first MVP experience.
+                </p>
+              </div>
+            </div>
+
+            <Row className="g-4">
+              {mockRecommendations.map((product) => (
+                <Col md={6} xl={4} key={product.id}>
+                  <ProductCard product={product} />
+                </Col>
+              ))}
+            </Row>
+          </section>
 
           <Row className="g-4">
             <Col md={4}>
@@ -85,7 +106,6 @@ export default function HomePage() {
     </>
   );
 }
-
 
 /*import Image from "next/image";
 import styles from "./page.module.css";

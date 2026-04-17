@@ -21,6 +21,8 @@
 - API route calls Anthropic
 - Structured response returns to UI
 
+- mock recommendation data is used before live AI integration to validate layout and card structure
+
 ## Planned State
 - chat messages
 - recommendations
@@ -28,3 +30,5 @@
 - compare products
 - loading state
 - error state
+
+- mock chat messages for UI development before API integration

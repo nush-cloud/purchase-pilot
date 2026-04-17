@@ -20,3 +20,8 @@ Clean, modern, trustworthy, easy to scan.
 - assistant messages use light cards
 - user messages use primary-colored cards
 - input area stays fixed at the bottom of the chat card
+
+## Product Card Patterns
+- recommendation cards show product name, price, match score, and explanation
+- pros and cons are displayed as quick-scan lists
+- action buttons support future save and compare flows
