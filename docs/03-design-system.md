@@ -25,3 +25,8 @@ Clean, modern, trustworthy, easy to scan.
 - recommendation cards show product name, price, match score, and explanation
 - pros and cons are displayed as quick-scan lists
 - action buttons support future save and compare flows
+
+## Comparison Patterns
+- comparison table shows products as columns and evaluation criteria as rows
+- key fields include price, match score, description, pros, and cons
+- layout is built for quick scanning instead of deep reading

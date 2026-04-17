@@ -11,6 +11,7 @@
 - Compare page
 - Saved page
 
+- Compare page uses shared mock recommendation data and a reusable comparison table component
 
 ## API
 - Route handler in `app/api/chat/route.ts`
