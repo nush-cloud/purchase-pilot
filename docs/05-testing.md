@@ -1,5 +1,5 @@
 # Testing Notes
-
+- verify that typed messages appear immediately in the conversation UI
 ## What to Test
 - Can users understand the app quickly?
 - Are follow-up questions clear?

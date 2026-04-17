@@ -34,3 +34,4 @@
 - error state
 
 - mock chat messages for UI development before API integration
+- local chat state allows new user messages to appear before backend integration
