@@ -1,32 +1,116 @@
 'use client';
+
+import AppNavbar from "@/components/layout/AppNavbar";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 
 export default function HomePage() {
   return (
-    <main className="py-5">
-      <Container>
-        <h1 className="display-4 fw-bold mb-3">Purchase Pilot</h1>
-        <p className="lead mb-4">
-          A conversational AI shopping assistant that helps users discover,
-          compare, and save products.
-        </p>
+    <>
+      <AppNavbar />
 
-        <Card className="shadow-sm">
-          <Card.Body>
-            <Card.Title>Setup Check</Card.Title>
-            <Card.Text>
-              If this page looks styled with a card and button, Bootstrap is working.
-            </Card.Text>
-            <Button variant="primary">Bootstrap is working</Button>
-          </Card.Body>
-        </Card>
-      </Container>
-    </main>
+      <main className="py-5">
+        <Container>
+          <Row className="align-items-center gy-4 mb-5">
+            <Col lg={7}>
+              <span className="text-uppercase text-secondary fw-semibold small">
+                AI Shopping Assistant
+              </span>
+              <h1 className="display-3 fw-bold mt-2 mb-3">
+                Shop smarter with Purchase Pilot
+              </h1>
+              <p className="lead text-light-emphasis mb-4">
+                Describe what you need, answer a few quick follow-up questions,
+                and get product recommendations you can compare and save.
+              </p>
+
+              <div className="d-flex gap-3 flex-wrap">
+                <Button variant="primary" size="lg">
+                  Start Shopping
+                </Button>
+                <Button variant="outline-light" size="lg">
+                  View Demo Flow
+                </Button>
+              </div>
+            </Col>
+
+            <Col lg={5}>
+              <Card className="shadow-sm border-0">
+                <Card.Body className="p-4">
+                  <h2 className="h4 mb-3">Try the idea</h2>
+                  <p className="text-muted mb-3">
+                    Example prompt:
+                  </p>
+                  <Card className="bg-light border-0 mb-3">
+                    <Card.Body>
+                      I need running shoes under $120 for daily use.
+                    </Card.Body>
+                  </Card>
+
+                  <Form>
+                    <Form.Group className="mb-3">
+                      <Form.Label>What are you shopping for?</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Example: I need a laptop for design work under $900"
+                      />
+                    </Form.Group>
+
+                    <Button variant="primary" className="w-100">
+                      Get Recommendations
+                    </Button>
+                  </Form>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row className="g-4">
+            <Col md={4}>
+              <Card className="h-100 shadow-sm">
+                <Card.Body>
+                  <Card.Title>Guided Discovery</Card.Title>
+                  <Card.Text>
+                    Users start with a natural language prompt instead of digging
+                    through endless filters.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col md={4}>
+              <Card className="h-100 shadow-sm">
+                <Card.Body>
+                  <Card.Title>Smart Comparison</Card.Title>
+                  <Card.Text>
+                    Product recommendations are structured so users can compare
+                    options with less decision fatigue.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col md={4}>
+              <Card className="h-100 shadow-sm">
+                <Card.Body>
+                  <Card.Title>Saved Picks</Card.Title>
+                  <Card.Text>
+                    Users can save strong candidates and revisit them later
+                    instead of losing track across tabs.
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </main>
+    </>
   );
 }
-
 
 
 

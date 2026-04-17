@@ -7,8 +7,10 @@
 
 ## Pages
 - Home page
+- Home page includes navbar, hero section, prompt input area, and feature highlights
 - Compare page
 - Saved page
+
 
 ## API
 - Route handler in `app/api/chat/route.ts`

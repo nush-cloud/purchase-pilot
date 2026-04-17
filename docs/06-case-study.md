@@ -17,6 +17,8 @@ Reduce shopping friction through a guided AI-powered experience.
 - Tested with users
 - Iterated based on feedback
 
+
+- created the initial landing page, navbar, and placeholder compare/saved pages
 ## Outcome
 To be completed during development and testing.
 
