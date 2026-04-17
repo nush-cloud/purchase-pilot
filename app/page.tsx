@@ -1,11 +1,11 @@
 'use client';
 
 import AppNavbar from "@/components/layout/AppNavbar";
+import ChatLayout from "@/components/chat/ChatLayout";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
 export default function HomePage() {
@@ -16,7 +16,7 @@ export default function HomePage() {
       <main className="py-5">
         <Container>
           <Row className="align-items-center gy-4 mb-5">
-            <Col lg={7}>
+            <Col lg={6}>
               <span className="text-uppercase text-secondary fw-semibold small">
                 AI Shopping Assistant
               </span>
@@ -38,34 +38,8 @@ export default function HomePage() {
               </div>
             </Col>
 
-            <Col lg={5}>
-              <Card className="shadow-sm border-0">
-                <Card.Body className="p-4">
-                  <h2 className="h4 mb-3">Try the idea</h2>
-                  <p className="text-muted mb-3">
-                    Example prompt:
-                  </p>
-                  <Card className="bg-light border-0 mb-3">
-                    <Card.Body>
-                      I need running shoes under $120 for daily use.
-                    </Card.Body>
-                  </Card>
-
-                  <Form>
-                    <Form.Group className="mb-3">
-                      <Form.Label>What are you shopping for?</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Example: I need a laptop for design work under $900"
-                      />
-                    </Form.Group>
-
-                    <Button variant="primary" className="w-100">
-                      Get Recommendations
-                    </Button>
-                  </Form>
-                </Card.Body>
-              </Card>
+            <Col lg={6}>
+              <ChatLayout />
             </Col>
           </Row>
 
@@ -111,7 +85,6 @@ export default function HomePage() {
     </>
   );
 }
-
 
 
 /*import Image from "next/image";

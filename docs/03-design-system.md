@@ -15,3 +15,8 @@ Clean, modern, trustworthy, easy to scan.
 - Good spacing
 - Minimal clutter
 - Mobile-friendly design
+
+## Chat Patterns
+- assistant messages use light cards
+- user messages use primary-colored cards
+- input area stays fixed at the bottom of the chat card
