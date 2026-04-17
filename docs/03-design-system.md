@@ -30,3 +30,8 @@ Clean, modern, trustworthy, easy to scan.
 - comparison table shows products as columns and evaluation criteria as rows
 - key fields include price, match score, description, pros, and cons
 - layout is built for quick scanning instead of deep reading
+
+## Saved Page Patterns
+- saved items reuse the same recommendation card structure for consistency
+- actions include compare, saved state, and remove
+- the page also includes an empty-state pattern for future logic

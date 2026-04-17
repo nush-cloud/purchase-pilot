@@ -22,6 +22,7 @@ Reduce shopping friction through a guided AI-powered experience.
 - built a static chat interface with mock conversation data before integrating the AI backend
 - created reusable recommendation cards using mock product data to validate the shopping results experience before backend integration
 - built a side-by-side comparison page to reduce decision fatigue and make recommendation tradeoffs easier to scan
+- built a saved-products page to support shortlist behavior and make the shopping flow feel more complete
 ## Outcome
 To be completed during development and testing.
 

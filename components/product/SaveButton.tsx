@@ -2,10 +2,18 @@
 
 import Button from "react-bootstrap/Button";
 
-export default function SaveButton() {
+interface SaveButtonProps {
+  label?: string;
+  variant?: string;
+}
+
+export default function SaveButton({
+  label = "Save",
+  variant = "outline-primary",
+}: SaveButtonProps) {
   return (
-    <Button variant="outline-primary" size="sm">
-      Save
+    <Button variant={variant} size="sm">
+      {label}
     </Button>
   );
 }
