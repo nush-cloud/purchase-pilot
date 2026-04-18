@@ -1,7 +1,7 @@
 'use client';
 import AppNavbar from "@/components/layout/AppNavbar";
 import ComparisonTable from "@/components/product/ComparisonTable";
-import { mockRecommendations } from "@/lib/mockData";
+import { runningShoeRecommendations } from "@/lib/mockData";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -33,7 +33,7 @@ export default function ComparePage() {
             <Col>
               <Card className="shadow-sm border-0">
                 <Card.Body className="p-4">
-                  <ComparisonTable products={mockRecommendations} />
+                  <ComparisonTable products={runningShoeRecommendations} />
                 </Card.Body>
               </Card>
             </Col>

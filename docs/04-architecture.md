@@ -24,6 +24,7 @@
 - Structured response returns to UI
 
 - mock recommendation data is used before live AI integration to validate layout and card structure
+- homepage state connects local chat input with locally selected recommendation sets
 
 ## Planned State
 - chat messages

@@ -1,11 +1,14 @@
 # Testing Notes
 - verify that typed messages appear immediately in the conversation UI
+- verify that laptop-related prompts switch recommendation cards from shoes to laptops
+- verify that shoe-related prompts switch recommendations back to running shoes
 ## What to Test
 - Can users understand the app quickly?
 - Are follow-up questions clear?
 - Are product recommendations easy to scan?
 - Is compare useful?
 - Is save useful?
+
 
 ## Testing Template
 ### Tester

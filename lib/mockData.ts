@@ -6,19 +6,9 @@ export const mockMessages: ChatMessage[] = [
     sender: "assistant",
     text: "Hi! I’m Purchase Pilot. Tell me what you’re shopping for, and I’ll help narrow down the best options.",
   },
-  {
-    id: 2,
-    sender: "user",
-    text: "I need running shoes under $120 for daily use.",
-  },
-  {
-    id: 3,
-    sender: "assistant",
-    text: "Got it. Do you prefer more cushioning, lightweight performance, or a balance of both?",
-  },
 ];
 
-export const mockRecommendations: ProductRecommendation[] = [
+export const runningShoeRecommendations: ProductRecommendation[] = [
   {
     id: 1,
     name: "Nike Revolution 7",
@@ -53,3 +43,84 @@ export const mockRecommendations: ProductRecommendation[] = [
     matchScore: 91,
   },
 ];
+
+export const laptopRecommendations: ProductRecommendation[] = [
+  {
+    id: 4,
+    name: "Acer Aspire 5",
+    price: "$799",
+    category: "Laptops",
+    description: "A practical laptop for students and general creative work.",
+    whyItMatches: "Fits an under-$900 budget and works for everyday design tools and multitasking.",
+    pros: ["Affordable", "Good everyday performance", "Solid value"],
+    cons: ["Average display quality", "Not a premium build"],
+    matchScore: 86,
+  },
+  {
+    id: 5,
+    name: "Lenovo IdeaPad Slim 5",
+    price: "$849",
+    category: "Laptops",
+    description: "A balanced laptop with strong everyday productivity performance.",
+    whyItMatches: "A good fit for design students who want a modern, portable machine under budget.",
+    pros: ["Slim design", "Good battery life", "Reliable performance"],
+    cons: ["Integrated graphics", "Mid-range screen"],
+    matchScore: 88,
+  },
+  {
+    id: 6,
+    name: "HP Pavilion 15",
+    price: "$899",
+    category: "Laptops",
+    description: "A mainstream laptop with a larger screen and versatile everyday use.",
+    whyItMatches: "Stays near your budget ceiling and offers flexibility for productivity and light design work.",
+    pros: ["Large display", "Good general use", "Widely available"],
+    cons: ["Not ideal for heavy creative workloads", "Bulkier than ultrabooks"],
+    matchScore: 85,
+  },
+];
+
+export function getMockRecommendations(query: string): ProductRecommendation[] {
+  const lowerQuery = query.toLowerCase();
+
+  if (
+    lowerQuery.includes("laptop") ||
+    lowerQuery.includes("design") ||
+    lowerQuery.includes("macbook") ||
+    lowerQuery.includes("computer")
+  ) {
+    return laptopRecommendations;
+  }
+
+  if (
+    lowerQuery.includes("shoe") ||
+    lowerQuery.includes("running") ||
+    lowerQuery.includes("sneaker")
+  ) {
+    return runningShoeRecommendations;
+  }
+
+  return runningShoeRecommendations;
+}
+
+export function getAssistantReply(query: string): string {
+  const lowerQuery = query.toLowerCase();
+
+  if (
+    lowerQuery.includes("laptop") ||
+    lowerQuery.includes("design") ||
+    lowerQuery.includes("computer")
+  ) {
+    return "Got it — I’ve updated the recommendations with some laptop options that match your request.";
+  }
+
+  if (
+    lowerQuery.includes("shoe") ||
+    lowerQuery.includes("running") ||
+    lowerQuery.includes("sneaker")
+  ) {
+    return "Got it — I’ve updated the recommendations with shoe options that fit your request.";
+  }
+
+  return "Thanks — I’ve updated the recommendations based on your message.";
+}

@@ -1,9 +1,16 @@
 'use client';
 
+import { useState } from "react";
 import AppNavbar from "@/components/layout/AppNavbar";
 import ChatLayout from "@/components/chat/ChatLayout";
 import ProductCard from "@/components/product/ProductCard";
-import { mockRecommendations } from "@/lib/mockData";
+import {
+  getAssistantReply,
+  getMockRecommendations,
+  mockMessages,
+  runningShoeRecommendations,
+} from "@/lib/mockData";
+import { ChatMessage, ProductRecommendation } from "@/lib/types";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -11,6 +18,39 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
 export default function HomePage() {
+  const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
+  const [inputValue, setInputValue] = useState("");
+  const [recommendations, setRecommendations] = useState<ProductRecommendation[]>(
+    runningShoeRecommendations
+  );
+
+  const handleSend = () => {
+    const trimmedValue = inputValue.trim();
+
+    if (!trimmedValue) return;
+
+    const userMessage: ChatMessage = {
+      id: messages.length + 1,
+      sender: "user",
+      text: trimmedValue,
+    };
+
+    const assistantMessage: ChatMessage = {
+      id: messages.length + 2,
+      sender: "assistant",
+      text: getAssistantReply(trimmedValue),
+    };
+
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      userMessage,
+      assistantMessage,
+    ]);
+
+    setRecommendations(getMockRecommendations(trimmedValue));
+    setInputValue("");
+  };
+
   return (
     <>
       <AppNavbar />
@@ -41,7 +81,12 @@ export default function HomePage() {
             </Col>
 
             <Col lg={6}>
-              <ChatLayout />
+              <ChatLayout
+                messages={messages}
+                inputValue={inputValue}
+                onInputChange={setInputValue}
+                onSend={handleSend}
+              />
             </Col>
           </Row>
 
@@ -50,13 +95,13 @@ export default function HomePage() {
               <div>
                 <h2 className="h2 fw-bold mb-1">Recommended Products</h2>
                 <p className="text-light-emphasis mb-0">
-                  Mock recommendation cards for the first MVP experience.
+                  Recommendation cards now respond to the local chat flow.
                 </p>
               </div>
             </div>
 
             <Row className="g-4">
-              {mockRecommendations.map((product) => (
+              {recommendations.map((product) => (
                 <Col md={6} xl={4} key={product.id}>
                   <ProductCard product={product} />
                 </Col>

@@ -1,31 +1,23 @@
 'use client';
 
-import { useState } from "react";
 import Card from "react-bootstrap/Card";
 import ChatInput from "./ChatInput";
 import MessageList from "./MessageList";
-import { mockMessages } from "@/lib/mockData";
 import { ChatMessage } from "@/lib/types";
 
-export default function ChatLayout() {
-  const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
-  const [inputValue, setInputValue] = useState("");
+interface ChatLayoutProps {
+  messages: ChatMessage[];
+  inputValue: string;
+  onInputChange: (value: string) => void;
+  onSend: () => void;
+}
 
-  const handleSend = () => {
-    const trimmedValue = inputValue.trim();
-
-    if (!trimmedValue) return;
-
-    const newMessage: ChatMessage = {
-      id: messages.length + 1,
-      sender: "user",
-      text: trimmedValue,
-    };
-
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-    setInputValue("");
-  };
-
+export default function ChatLayout({
+  messages,
+  inputValue,
+  onInputChange,
+  onSend,
+}: ChatLayoutProps) {
   return (
     <Card className="shadow-sm border-0 h-100">
       <Card.Body className="p-4 d-flex flex-column">
@@ -45,8 +37,8 @@ export default function ChatLayout() {
 
         <ChatInput
           value={inputValue}
-          onChange={setInputValue}
-          onSend={handleSend}
+          onChange={onInputChange}
+          onSend={onSend}
         />
       </Card.Body>
     </Card>

@@ -2,7 +2,7 @@
 
 import AppNavbar from "@/components/layout/AppNavbar";
 import SaveButton from "@/components/product/SaveButton";
-import { mockRecommendations } from "@/lib/mockData";
+import { runningShoeRecommendations } from "@/lib/mockData";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -34,7 +34,7 @@ export default function SavedPage() {
           </Row>
 
           <Row className="g-4 mb-5">
-            {mockRecommendations.map((product) => (
+            {runningShoeRecommendations.map((product) => (
               <Col md={6} xl={4} key={product.id}>
                 <Card className="h-100 shadow-sm border-0">
                   <Card.Body className="d-flex flex-column">

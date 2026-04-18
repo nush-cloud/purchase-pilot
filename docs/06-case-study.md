@@ -24,6 +24,7 @@ Reduce shopping friction through a guided AI-powered experience.
 - built a side-by-side comparison page to reduce decision fatigue and make recommendation tradeoffs easier to scan
 - built a saved-products page to support shortlist behavior and make the shopping flow feel more complete
 - made the chat input interactive so users could add new messages locally before connecting the real AI backend
+- connected the chat interface to local recommendation logic so user input could drive different result sets before real AI integration
 ## Outcome
 To be completed during development and testing.
 
