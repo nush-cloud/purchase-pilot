@@ -4,6 +4,7 @@
 - verify that shoe-related prompts switch recommendations back to running shoes
 - connected the homepage chat UI to the real backend route so Claude responses could drive the recommendation flow
 - verify that the assistant remembers earlier details like budget, platform, and product type across multiple turns
+- verify that recommendation cards remain visually consistent even when Claude returns slightly uneven product data
 ## What to Test
 - Can users understand the app quickly?
 - Are follow-up questions clear?

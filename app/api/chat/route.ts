@@ -12,6 +12,17 @@ interface ChatRequestBody {
   messages?: ConversationMessage[];
 }
 
+interface RawRecommendation {
+  name?: unknown;
+  price?: unknown;
+  category?: unknown;
+  description?: unknown;
+  whyItMatches?: unknown;
+  pros?: unknown;
+  cons?: unknown;
+  matchScore?: unknown;
+}
+
 const recommendationSchema = {
   type: "object",
   properties: {
@@ -69,6 +80,80 @@ function buildConversationTranscript(messages: ConversationMessage[]) {
       return `${roleLabel}: ${message.text}`;
     })
     .join("\n\n");
+}
+
+function toCleanString(value: unknown, fallback = "") {
+  if (typeof value !== "string") return fallback;
+  return value.trim();
+}
+
+function toCleanList(value: unknown) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .filter((item): item is string => typeof item === "string")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 3);
+}
+
+function toPriceString(value: unknown) {
+  const raw = toCleanString(value);
+  if (!raw) return "Price unavailable";
+
+  if (raw.startsWith("$")) return raw;
+
+  const numeric = Number(raw.replace(/[^0-9.]/g, ""));
+  if (!Number.isNaN(numeric) && numeric > 0) {
+    return `$${Math.round(numeric)}`;
+  }
+
+  return raw;
+}
+
+function toMatchScore(value: unknown) {
+  const numeric =
+    typeof value === "number"
+      ? value
+      : typeof value === "string"
+      ? Number(value)
+      : 80;
+
+  if (Number.isNaN(numeric)) return 80;
+
+  return Math.min(98, Math.max(70, Math.round(numeric)));
+}
+
+function normalizeRecommendations(raw: unknown) {
+  if (!Array.isArray(raw)) return [];
+
+  return raw
+    .map((item) => {
+      const recommendation = item as RawRecommendation;
+
+      const name = toCleanString(recommendation.name);
+      const category = toCleanString(recommendation.category, "Products");
+      const description = toCleanString(recommendation.description);
+      const whyItMatches = toCleanString(recommendation.whyItMatches);
+      const pros = toCleanList(recommendation.pros);
+      const cons = toCleanList(recommendation.cons);
+
+      if (!name || !description || !whyItMatches) {
+        return null;
+      }
+
+      return {
+        name,
+        price: toPriceString(recommendation.price),
+        category,
+        description,
+        whyItMatches,
+        pros: pros.length > 0 ? pros : ["Good general fit"],
+        cons: cons.length > 0 ? cons : ["May involve tradeoffs"],
+        matchScore: toMatchScore(recommendation.matchScore),
+      };
+    })
+    .filter(Boolean)
+    .slice(0, 3);
 }
 
 export async function GET() {
@@ -154,7 +239,16 @@ Instructions:
 
     return NextResponse.json({
       ok: true,
-      ...parsed,
+      needsMoreInfo: Boolean(parsed.needsMoreInfo),
+      followUpQuestion:
+        typeof parsed.followUpQuestion === "string"
+          ? parsed.followUpQuestion.trim()
+          : "",
+      assistantReply:
+        typeof parsed.assistantReply === "string"
+          ? parsed.assistantReply.trim()
+          : "",
+      recommendations: normalizeRecommendations(parsed.recommendations),
     });
   } catch (error) {
     console.error("POST /api/chat error:", error);

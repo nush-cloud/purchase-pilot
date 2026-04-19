@@ -16,6 +16,8 @@
 
 ## API
 - Route handler in `app/api/chat/route.ts`
+- backend now normalizes Claude recommendation output before sending it to the frontend
+- normalization improves price formatting, pros/cons consistency, match scores, and card stability
 
 ## Data Flow
 - User enters shopping need

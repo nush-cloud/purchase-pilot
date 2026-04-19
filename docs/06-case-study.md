@@ -27,6 +27,7 @@ Reduce shopping friction through a guided AI-powered experience.
 - connected the chat interface to local recommendation logic so user input could drive different result sets before real AI integration
 - connected the homepage chat UI to the real backend route so Claude responses could drive the recommendation flow
 - improved the AI flow by sending full chat history to the backend so Claude could remember earlier user constraints
+- improved backend response quality by normalizing Claude-generated recommendation data before rendering it in product cards
 ## Outcome
 To be completed during development and testing.
 
