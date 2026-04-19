@@ -9,12 +9,14 @@ interface ChatInputProps {
   value: string;
   onChange: (value: string) => void;
   onSend: () => void;
+  disabled?: boolean;
 }
 
 export default function ChatInput({
   value,
   onChange,
   onSend,
+  disabled = false,
 }: ChatInputProps) {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -29,9 +31,10 @@ export default function ChatInput({
           onChange={(event) => onChange(event.target.value)}
           placeholder="Type your shopping need here..."
           aria-label="Shopping input"
+          disabled={disabled}
         />
-        <Button type="submit" variant="primary">
-          Send
+        <Button type="submit" variant="primary" disabled={disabled}>
+          {disabled ? "Finding..." : "Send"}
         </Button>
       </InputGroup>
     </Form>

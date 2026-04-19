@@ -4,51 +4,93 @@ import { useState } from "react";
 import AppNavbar from "@/components/layout/AppNavbar";
 import ChatLayout from "@/components/chat/ChatLayout";
 import ProductCard from "@/components/product/ProductCard";
+import { mockMessages, runningShoeRecommendations } from "@/lib/mockData";
 import {
-  getAssistantReply,
-  getMockRecommendations,
-  mockMessages,
-  runningShoeRecommendations,
-} from "@/lib/mockData";
-import { ChatMessage, ProductRecommendation } from "@/lib/types";
+  ChatMessage,
+  ProductRecommendation,
+  ShoppingApiResponse,
+} from "@/lib/types";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Spinner from "react-bootstrap/Spinner";
 
 export default function HomePage() {
   const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
   const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [recommendations, setRecommendations] = useState<ProductRecommendation[]>(
     runningShoeRecommendations
   );
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const trimmedValue = inputValue.trim();
 
-    if (!trimmedValue) return;
+    if (!trimmedValue || isLoading) return;
 
     const userMessage: ChatMessage = {
-      id: messages.length + 1,
+      id: Date.now(),
       sender: "user",
       text: trimmedValue,
     };
 
-    const assistantMessage: ChatMessage = {
-      id: messages.length + 2,
-      sender: "assistant",
-      text: getAssistantReply(trimmedValue),
-    };
-
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      userMessage,
-      assistantMessage,
-    ]);
-
-    setRecommendations(getMockRecommendations(trimmedValue));
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInputValue("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: trimmedValue }),
+      });
+
+      const data: ShoppingApiResponse = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || "Failed to get a response from the API.");
+      }
+
+      const assistantParts: string[] = [];
+
+      if (data.assistantReply?.trim()) {
+        assistantParts.push(data.assistantReply.trim());
+      }
+
+      if (data.needsMoreInfo && data.followUpQuestion?.trim()) {
+        assistantParts.push(data.followUpQuestion.trim());
+      }
+
+      const assistantText =
+        assistantParts.join("\n\n") || "I updated the recommendations.";
+
+      const assistantMessage: ChatMessage = {
+        id: Date.now() + 1,
+        sender: "assistant",
+        text: assistantText,
+      };
+
+      setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+      setRecommendations(data.recommendations ?? []);
+    } catch (error) {
+      const errorMessage: ChatMessage = {
+        id: Date.now() + 1,
+        sender: "assistant",
+        text:
+          error instanceof Error
+            ? `Something went wrong: ${error.message}`
+            : "Something went wrong while getting recommendations.",
+      };
+
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      setRecommendations([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -86,6 +128,7 @@ export default function HomePage() {
                 inputValue={inputValue}
                 onInputChange={setInputValue}
                 onSend={handleSend}
+                isLoading={isLoading}
               />
             </Col>
           </Row>
@@ -95,18 +138,42 @@ export default function HomePage() {
               <div>
                 <h2 className="h2 fw-bold mb-1">Recommended Products</h2>
                 <p className="text-light-emphasis mb-0">
-                  Recommendation cards now respond to the local chat flow.
+                  Product cards now come from the real backend chat route.
                 </p>
               </div>
             </div>
 
-            <Row className="g-4">
-              {recommendations.map((product) => (
-                <Col md={6} xl={4} key={product.id}>
-                  <ProductCard product={product} />
-                </Col>
-              ))}
-            </Row>
+            {isLoading ? (
+              <Card className="shadow-sm border-0">
+                <Card.Body className="p-4 d-flex align-items-center gap-3">
+                  <Spinner animation="border" />
+                  <div>
+                    <div className="fw-semibold">Finding recommendations...</div>
+                    <div className="text-muted small">
+                      Asking Claude to help narrow down the best options.
+                    </div>
+                  </div>
+                </Card.Body>
+              </Card>
+            ) : recommendations.length > 0 ? (
+              <Row className="g-4">
+                {recommendations.map((product, index) => (
+                  <Col md={6} xl={4} key={`${product.name}-${index}`}>
+                    <ProductCard product={{ ...product, id: index + 1 }} />
+                  </Col>
+                ))}
+              </Row>
+            ) : (
+              <Card className="shadow-sm border-0">
+                <Card.Body className="p-4">
+                  <h3 className="h5 mb-2">No direct matches yet</h3>
+                  <p className="text-muted mb-0">
+                    The assistant needs a little more detail before recommending
+                    products. Try answering the follow-up question in the chat.
+                  </p>
+                </Card.Body>
+              </Card>
+            )}
           </section>
 
           <Row className="g-4">

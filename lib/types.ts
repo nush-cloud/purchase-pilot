@@ -7,7 +7,7 @@ export interface ChatMessage {
 }
 
 export interface ProductRecommendation {
-  id: number;
+  id?: number;
   name: string;
   price: string;
   category: string;
@@ -16,4 +16,13 @@ export interface ProductRecommendation {
   pros: string[];
   cons: string[];
   matchScore: number;
+}
+
+export interface ShoppingApiResponse {
+  ok: boolean;
+  needsMoreInfo?: boolean;
+  followUpQuestion?: string;
+  assistantReply?: string;
+  recommendations?: ProductRecommendation[];
+  error?: string;
 }

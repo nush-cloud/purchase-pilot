@@ -20,7 +20,9 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
           <div className="small fw-semibold mb-1">
             {isUser ? "You" : "Purchase Pilot"}
           </div>
-          <div className="mb-0">{message.text}</div>
+          <div className="mb-0" style={{ whiteSpace: "pre-line" }}>
+  {message.text}
+</div>
         </Card.Body>
       </Card>
     </div>

@@ -100,7 +100,7 @@ export function getMockRecommendations(query: string): ProductRecommendation[] {
     return runningShoeRecommendations;
   }
 
-  return runningShoeRecommendations;
+  return [];
 }
 
 export function getAssistantReply(query: string): string {
@@ -122,5 +122,5 @@ export function getAssistantReply(query: string): string {
     return "Got it — I’ve updated the recommendations with shoe options that fit your request.";
   }
 
-  return "Thanks — I’ve updated the recommendations based on your message.";
+  return "I couldn’t find a close product category match yet. Try including the item type, budget, or use case.";
 }

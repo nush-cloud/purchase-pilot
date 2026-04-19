@@ -1,6 +1,7 @@
 'use client';
 
 import Card from "react-bootstrap/Card";
+import Spinner from "react-bootstrap/Spinner";
 import ChatInput from "./ChatInput";
 import MessageList from "./MessageList";
 import { ChatMessage } from "@/lib/types";
@@ -10,6 +11,7 @@ interface ChatLayoutProps {
   inputValue: string;
   onInputChange: (value: string) => void;
   onSend: () => void;
+  isLoading: boolean;
 }
 
 export default function ChatLayout({
@@ -17,6 +19,7 @@ export default function ChatLayout({
   inputValue,
   onInputChange,
   onSend,
+  isLoading,
 }: ChatLayoutProps) {
   return (
     <Card className="shadow-sm border-0 h-100">
@@ -35,10 +38,18 @@ export default function ChatLayout({
           <MessageList messages={messages} />
         </div>
 
+        {isLoading && (
+          <div className="d-flex align-items-center gap-2 small text-muted mb-3">
+            <Spinner animation="border" size="sm" />
+            <span>Updating recommendations...</span>
+          </div>
+        )}
+
         <ChatInput
           value={inputValue}
           onChange={onInputChange}
           onSend={onSend}
+          disabled={isLoading}
         />
       </Card.Body>
     </Card>

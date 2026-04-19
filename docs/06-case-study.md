@@ -25,6 +25,7 @@ Reduce shopping friction through a guided AI-powered experience.
 - built a saved-products page to support shortlist behavior and make the shopping flow feel more complete
 - made the chat input interactive so users could add new messages locally before connecting the real AI backend
 - connected the chat interface to local recommendation logic so user input could drive different result sets before real AI integration
+- connected the homepage chat UI to the real backend route so Claude responses could drive the recommendation flow
 ## Outcome
 To be completed during development and testing.
 

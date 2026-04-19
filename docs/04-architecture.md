@@ -25,7 +25,8 @@
 
 - mock recommendation data is used before live AI integration to validate layout and card structure
 - homepage state connects local chat input with locally selected recommendation sets
-
+- homepage chat now sends real POST requests to `/api/chat`
+- backend responses drive assistant messages and recommendation cards
 ## Planned State
 - chat messages
 - recommendations
