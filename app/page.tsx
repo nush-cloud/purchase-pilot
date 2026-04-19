@@ -4,7 +4,7 @@ import { useState } from "react";
 import AppNavbar from "@/components/layout/AppNavbar";
 import ChatLayout from "@/components/chat/ChatLayout";
 import ProductCard from "@/components/product/ProductCard";
-import { mockMessages, runningShoeRecommendations } from "@/lib/mockData";
+import { mockMessages } from "@/lib/mockData";
 import {
   ChatMessage,
   ProductRecommendation,
@@ -21,9 +21,7 @@ export default function HomePage() {
   const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [recommendations, setRecommendations] = useState<ProductRecommendation[]>(
-    runningShoeRecommendations
-  );
+  const [recommendations, setRecommendations] = useState<ProductRecommendation[]>([]);
 
   const handleSend = async () => {
     const trimmedValue = inputValue.trim();
@@ -36,7 +34,9 @@ export default function HomePage() {
       text: trimmedValue,
     };
 
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    const nextMessages = [...messages, userMessage];
+
+    setMessages(nextMessages);
     setInputValue("");
     setIsLoading(true);
 
@@ -46,7 +46,13 @@ export default function HomePage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: trimmedValue }),
+        body: JSON.stringify({
+          message: trimmedValue,
+          messages: nextMessages.map((message) => ({
+            sender: message.sender,
+            text: message.text,
+          })),
+        }),
       });
 
       const data: ShoppingApiResponse = await response.json();
@@ -150,7 +156,7 @@ export default function HomePage() {
                   <div>
                     <div className="fw-semibold">Finding recommendations...</div>
                     <div className="text-muted small">
-                      Asking Claude to help narrow down the best options.
+                      Asking Claude to use the full conversation context.
                     </div>
                   </div>
                 </Card.Body>
@@ -168,8 +174,8 @@ export default function HomePage() {
                 <Card.Body className="p-4">
                   <h3 className="h5 mb-2">No direct matches yet</h3>
                   <p className="text-muted mb-0">
-                    The assistant needs a little more detail before recommending
-                    products. Try answering the follow-up question in the chat.
+                    The assistant may still need one final detail before giving
+                    recommendations. Answer the follow-up question in the chat.
                   </p>
                 </Card.Body>
               </Card>

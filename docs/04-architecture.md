@@ -27,6 +27,8 @@
 - homepage state connects local chat input with locally selected recommendation sets
 - homepage chat now sends real POST requests to `/api/chat`
 - backend responses drive assistant messages and recommendation cards
+- homepage now sends full conversation history to the backend, not only the latest message
+- backend uses conversation transcript context to reduce repetitive follow-up questions
 ## Planned State
 - chat messages
 - recommendations
