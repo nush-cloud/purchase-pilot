@@ -18,6 +18,7 @@ import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
 import { setSessionRecommendations } from "@/lib/storage";
 
+
 export default function HomePage() {
   const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
   const [inputValue, setInputValue] = useState("");

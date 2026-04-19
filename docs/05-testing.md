@@ -7,6 +7,8 @@
 - verify that recommendation cards remain visually consistent even when Claude returns slightly uneven product data
 - verify that clicking Save on a recommendation makes it appear on the Saved page
 - verify that the Compare page reflects the latest Claude-generated recommendation set from the homepage
+- verify that clicking Save on a recommendation makes it appear on the Saved page
+- verify that the Compare page reflects the latest Claude-generated recommendation set from the homepage
 ## What to Test
 - Can users understand the app quickly?
 - Are follow-up questions clear?
