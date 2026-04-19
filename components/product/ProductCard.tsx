@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
@@ -7,12 +8,33 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Stack from "react-bootstrap/Stack";
 import SaveButton from "./SaveButton";
 import { ProductRecommendation } from "@/lib/types";
+import {
+  isProductSaved,
+  removeSavedProduct,
+  saveProduct,
+} from "@/lib/storage";
 
 interface ProductCardProps {
   product: ProductRecommendation;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setSaved(isProductSaved(product.name));
+  }, [product.name]);
+
+  const handleSaveToggle = () => {
+    if (saved) {
+      removeSavedProduct(product.name);
+      setSaved(false);
+    } else {
+      saveProduct(product);
+      setSaved(true);
+    }
+  };
+
   return (
     <Card className="h-100 shadow-sm border-0">
       <Card.Body className="d-flex flex-column">
@@ -60,10 +82,14 @@ export default function ProductCard({ product }: ProductCardProps) {
         </ListGroup>
 
         <Stack direction="horizontal" gap={2} className="mt-auto">
-          <Button variant="primary" size="sm">
+          <Button variant="primary" size="sm" href="/compare">
             Compare
           </Button>
-          <SaveButton />
+          <SaveButton
+            label={saved ? "Saved" : "Save"}
+            variant={saved ? "success" : "outline-primary"}
+            onClick={handleSaveToggle}
+          />
         </Stack>
       </Card.Body>
     </Card>

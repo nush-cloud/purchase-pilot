@@ -16,6 +16,7 @@ import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
+import { setSessionRecommendations } from "@/lib/storage";
 
 export default function HomePage() {
   const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
@@ -81,7 +82,9 @@ export default function HomePage() {
       };
 
       setMessages((prevMessages) => [...prevMessages, assistantMessage]);
-      setRecommendations(data.recommendations ?? []);
+      const nextRecommendations = data.recommendations ?? [];
+setRecommendations(nextRecommendations);
+setSessionRecommendations(nextRecommendations);
     } catch (error) {
       const errorMessage: ChatMessage = {
         id: Date.now() + 1,
@@ -94,6 +97,7 @@ export default function HomePage() {
 
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
       setRecommendations([]);
+      setSessionRecommendations([]);
     } finally {
       setIsLoading(false);
     }

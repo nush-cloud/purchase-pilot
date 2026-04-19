@@ -1,13 +1,22 @@
 'use client';
+
+import { useEffect, useState } from "react";
 import AppNavbar from "@/components/layout/AppNavbar";
 import ComparisonTable from "@/components/product/ComparisonTable";
-import { runningShoeRecommendations } from "@/lib/mockData";
+import { getSessionRecommendations } from "@/lib/storage";
+import { ProductRecommendation } from "@/lib/types";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 
 export default function ComparePage() {
+  const [products, setProducts] = useState<ProductRecommendation[]>([]);
+
+  useEffect(() => {
+    setProducts(getSessionRecommendations());
+  }, []);
+
   return (
     <>
       <AppNavbar />
@@ -31,11 +40,23 @@ export default function ComparePage() {
 
           <Row className="mb-4">
             <Col>
-              <Card className="shadow-sm border-0">
-                <Card.Body className="p-4">
-                  <ComparisonTable products={runningShoeRecommendations} />
-                </Card.Body>
-              </Card>
+              {products.length > 0 ? (
+                <Card className="shadow-sm border-0">
+                  <Card.Body className="p-4">
+                    <ComparisonTable products={products} />
+                  </Card.Body>
+                </Card>
+              ) : (
+                <Card className="shadow-sm border-0">
+                  <Card.Body className="p-4">
+                    <h2 className="h5 mb-2">No products to compare yet</h2>
+                    <p className="text-muted mb-0">
+                      Go back to the homepage, ask Purchase Pilot for product
+                      recommendations, and then open Compare again.
+                    </p>
+                  </Card.Body>
+                </Card>
+              )}
             </Col>
           </Row>
 
@@ -70,7 +91,7 @@ export default function ComparePage() {
                   <Card.Title>MVP purpose</Card.Title>
                   <Card.Text>
                     This comparison layout helps validate the core shopping flow before
-                    connecting real AI output.
+                    scaling further.
                   </Card.Text>
                 </Card.Body>
               </Card>

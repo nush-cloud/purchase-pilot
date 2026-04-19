@@ -31,6 +31,8 @@
 - backend responses drive assistant messages and recommendation cards
 - homepage now sends full conversation history to the backend, not only the latest message
 - backend uses conversation transcript context to reduce repetitive follow-up questions
+- latest homepage recommendations are stored in browser storage for reuse on the Compare page
+- saved products are stored in browser storage for reuse on the Saved page
 ## Planned State
 - chat messages
 - recommendations
