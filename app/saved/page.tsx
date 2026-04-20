@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import AppNavbar from "@/components/layout/AppNavbar";
 import ProductCard from "@/components/product/ProductCard";
-import { getSavedProducts } from "@/lib/storage";
+import {
+  getSavedProducts,
+  getSavedProductsUpdatedEventName,
+} from "@/lib/storage";
 import { ProductRecommendation } from "@/lib/types";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -14,7 +17,21 @@ export default function SavedPage() {
   const [savedProducts, setSavedProducts] = useState<ProductRecommendation[]>([]);
 
   useEffect(() => {
-    setSavedProducts(getSavedProducts());
+    const refreshSavedProducts = () => {
+      setSavedProducts(getSavedProducts());
+    };
+
+    refreshSavedProducts();
+
+    const eventName = getSavedProductsUpdatedEventName();
+
+    window.addEventListener(eventName, refreshSavedProducts);
+    window.addEventListener("storage", refreshSavedProducts);
+
+    return () => {
+      window.removeEventListener(eventName, refreshSavedProducts);
+      window.removeEventListener("storage", refreshSavedProducts);
+    };
   }, []);
 
   return (

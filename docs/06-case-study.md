@@ -30,6 +30,7 @@ Reduce shopping friction through a guided AI-powered experience.
 - improved backend response quality by normalizing Claude-generated recommendation data before rendering it in product cards
 - connected Claude-generated homepage recommendations to the Compare and Saved pages so the app behaved like one continuous shopping flow
 - connected Claude-generated homepage recommendations to the Compare and Saved pages so the app behaved like one continuous shopping flow
+- improved the saved-products experience by making shortlist updates reflect immediately in the UI
 ## Outcome
 To be completed during development and testing.
 

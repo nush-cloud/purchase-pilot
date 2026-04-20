@@ -2,9 +2,19 @@ import { ProductRecommendation } from "./types";
 
 const SESSION_RECOMMENDATIONS_KEY = "purchase-pilot-session-recommendations";
 const SAVED_PRODUCTS_KEY = "purchase-pilot-saved-products";
+const SAVED_PRODUCTS_UPDATED_EVENT = "purchase-pilot-saved-updated";
 
 function isBrowser() {
   return typeof window !== "undefined";
+}
+
+function notifySavedProductsUpdated() {
+  if (!isBrowser()) return;
+  window.dispatchEvent(new Event(SAVED_PRODUCTS_UPDATED_EVENT));
+}
+
+export function getSavedProductsUpdatedEventName() {
+  return SAVED_PRODUCTS_UPDATED_EVENT;
 }
 
 export function getSessionRecommendations(): ProductRecommendation[] {
@@ -48,6 +58,7 @@ export function setSavedProducts(products: ProductRecommendation[]) {
   if (!isBrowser()) return;
 
   localStorage.setItem(SAVED_PRODUCTS_KEY, JSON.stringify(products));
+  notifySavedProductsUpdated();
 }
 
 export function isProductSaved(productName: string) {

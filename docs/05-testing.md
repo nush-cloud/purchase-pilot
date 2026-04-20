@@ -9,6 +9,7 @@
 - verify that the Compare page reflects the latest Claude-generated recommendation set from the homepage
 - verify that clicking Save on a recommendation makes it appear on the Saved page
 - verify that the Compare page reflects the latest Claude-generated recommendation set from the homepage
+- verify that removing a saved product updates the Saved page immediately without a manual refresh
 ## What to Test
 - Can users understand the app quickly?
 - Are follow-up questions clear?
