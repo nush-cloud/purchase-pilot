@@ -18,26 +18,27 @@ import Row from "react-bootstrap/Row";
 import Spinner from "react-bootstrap/Spinner";
 import { setSessionRecommendations } from "@/lib/storage";
 
-
 export default function HomePage() {
- const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
-const [inputValue, setInputValue] = useState("");
-const [isLoading, setIsLoading] = useState(false);
-const [recommendations, setRecommendations] = useState<ProductRecommendation[]>([]);
-const [shouldScrollToResults, setShouldScrollToResults] = useState(false);
+  const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
+  const [inputValue, setInputValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [recommendations, setRecommendations] = useState<ProductRecommendation[]>([]);
+  const [shouldScrollToResults, setShouldScrollToResults] = useState(false);
+  const [needsMoreInfo, setNeedsMoreInfo] = useState(false);
+  const [followUpQuestion, setFollowUpQuestion] = useState("");
 
-const recommendationsRef = useRef<HTMLElement | null>(null);
+  const recommendationsRef = useRef<HTMLElement | null>(null);
 
-useEffect(() => {
-  if (!isLoading && shouldScrollToResults && recommendationsRef.current) {
-    recommendationsRef.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+  useEffect(() => {
+    if (!isLoading && shouldScrollToResults && recommendationsRef.current) {
+      recommendationsRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
 
-    setShouldScrollToResults(false);
-  }
-}, [isLoading, shouldScrollToResults]);
+      setShouldScrollToResults(false);
+    }
+  }, [isLoading, shouldScrollToResults]);
 
   const handleSend = async () => {
     const trimmedValue = inputValue.trim();
@@ -52,10 +53,13 @@ useEffect(() => {
 
     const nextMessages = [...messages, userMessage];
 
-  setMessages(nextMessages);
-setInputValue("");
-setIsLoading(true);
-setShouldScrollToResults(true);
+    setMessages(nextMessages);
+    setInputValue("");
+    setIsLoading(true);
+    setShouldScrollToResults(true);
+    setNeedsMoreInfo(false);
+    setFollowUpQuestion("");
+
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -97,9 +101,12 @@ setShouldScrollToResults(true);
       };
 
       setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+
       const nextRecommendations = data.recommendations ?? [];
-setRecommendations(nextRecommendations);
-setSessionRecommendations(nextRecommendations);
+      setRecommendations(nextRecommendations);
+      setSessionRecommendations(nextRecommendations);
+      setNeedsMoreInfo(Boolean(data.needsMoreInfo));
+      setFollowUpQuestion(data.followUpQuestion?.trim() ?? "");
     } catch (error) {
       const errorMessage: ChatMessage = {
         id: Date.now() + 1,
@@ -113,9 +120,22 @@ setSessionRecommendations(nextRecommendations);
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
       setRecommendations([]);
       setSessionRecommendations([]);
+      setNeedsMoreInfo(false);
+      setFollowUpQuestion("");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleResetSearch = () => {
+    setMessages(mockMessages);
+    setInputValue("");
+    setIsLoading(false);
+    setRecommendations([]);
+    setShouldScrollToResults(false);
+    setNeedsMoreInfo(false);
+    setFollowUpQuestion("");
+    setSessionRecommendations([]);
   };
 
   return (
@@ -143,6 +163,9 @@ setSessionRecommendations(nextRecommendations);
                 </Button>
                 <Button variant="outline-light" size="lg">
                   View Demo Flow
+                </Button>
+                <Button variant="outline-secondary" size="lg" onClick={handleResetSearch}>
+                  New Search
                 </Button>
               </div>
             </Col>
@@ -188,13 +211,30 @@ setSessionRecommendations(nextRecommendations);
                   </Col>
                 ))}
               </Row>
+            ) : needsMoreInfo ? (
+              <Card className="shadow-sm border-0">
+                <Card.Body className="p-4">
+                  <h3 className="h5 mb-2">One quick detail needed</h3>
+                  <p className="text-muted mb-3">
+                    Purchase Pilot is ready to recommend products, but it needs one final detail first.
+                  </p>
+
+                  <Card className="bg-light border-0">
+                    <Card.Body>
+                      <div className="fw-semibold mb-2">Follow-up question</div>
+                      <div className="mb-0">
+                        {followUpQuestion || "Please answer the follow-up question shown in the chat."}
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Card.Body>
+              </Card>
             ) : (
               <Card className="shadow-sm border-0">
                 <Card.Body className="p-4">
                   <h3 className="h5 mb-2">No direct matches yet</h3>
                   <p className="text-muted mb-0">
-                    The assistant may still need one final detail before giving
-                    recommendations. Answer the follow-up question in the chat.
+                    Try being a little more specific about the product type, budget, or use case.
                   </p>
                 </Card.Body>
               </Card>
@@ -243,70 +283,3 @@ setSessionRecommendations(nextRecommendations);
     </>
   );
 }
-
-/*import Image from "next/image";
-import styles from "./page.module.css";
-
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
-}*/
