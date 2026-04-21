@@ -12,6 +12,8 @@
 - verify that removing a saved product updates the Saved page immediately without a manual refresh
 - verify that the page scrolls to the recommendation section automatically after the assistant response completes
 - verify that clicking New Search resets the homepage conversation and clears current recommendation state
+- verify that clicking Compare on a product adds only that product to the Compare page
+- verify that Clear Compare resets the Compare page immediately
 ## What to Test
 - Can users understand the app quickly?
 - Are follow-up questions clear?

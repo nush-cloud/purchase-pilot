@@ -9,7 +9,10 @@ import Stack from "react-bootstrap/Stack";
 import SaveButton from "./SaveButton";
 import { ProductRecommendation } from "@/lib/types";
 import {
+  addCompareProduct,
+  isProductCompared,
   isProductSaved,
+  removeCompareProduct,
   removeSavedProduct,
   saveProduct,
 } from "@/lib/storage";
@@ -20,9 +23,11 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [saved, setSaved] = useState(false);
+  const [compared, setCompared] = useState(false);
 
   useEffect(() => {
     setSaved(isProductSaved(product.name));
+    setCompared(isProductCompared(product.name));
   }, [product.name]);
 
   const handleSaveToggle = () => {
@@ -32,6 +37,16 @@ export default function ProductCard({ product }: ProductCardProps) {
     } else {
       saveProduct(product);
       setSaved(true);
+    }
+  };
+
+  const handleCompareToggle = () => {
+    if (compared) {
+      removeCompareProduct(product.name);
+      setCompared(false);
+    } else {
+      addCompareProduct(product);
+      setCompared(true);
     }
   };
 
@@ -81,10 +96,15 @@ export default function ProductCard({ product }: ProductCardProps) {
           </ListGroup.Item>
         </ListGroup>
 
-        <Stack direction="horizontal" gap={2} className="mt-auto">
-          <Button variant="primary" size="sm" href="/compare">
-            Compare
+        <Stack direction="horizontal" gap={2} className="mt-auto flex-wrap">
+          <Button
+            variant={compared ? "success" : "primary"}
+            size="sm"
+            onClick={handleCompareToggle}
+          >
+            {compared ? "Added to Compare" : "Compare"}
           </Button>
+
           <SaveButton
             label={saved ? "Saved" : "Save"}
             variant={saved ? "success" : "outline-primary"}

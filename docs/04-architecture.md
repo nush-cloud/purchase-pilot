@@ -35,6 +35,8 @@
 - saved products are stored in browser storage for reuse on the Saved page
 - latest homepage recommendations are stored in browser storage for reuse on the Compare page
 - saved products are stored in browser storage for reuse on the Saved page
+- compare products are now stored separately from the session recommendation set
+- users explicitly choose which products to compare from the homepage cards
 ## Planned State
 - chat messages
 - recommendations

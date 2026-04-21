@@ -33,6 +33,7 @@ Reduce shopping friction through a guided AI-powered experience.
 - improved the saved-products experience by making shortlist updates reflect immediately in the UI
 - improved homepage usability by auto-scrolling users to recommendation results after each response
 - improved usability by adding a reset action so users could start a fresh shopping flow without reloading the page
+- improved the decision flow by letting users explicitly choose which Claude-generated products to compare instead of always comparing the full result set
 ## Outcome
 To be completed during development and testing.
 

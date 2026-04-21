@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import AppNavbar from "@/components/layout/AppNavbar";
 import ComparisonTable from "@/components/product/ComparisonTable";
 import {
-  getSessionRecommendations,
-  getSessionRecommendationsUpdatedEventName,
+  clearCompareProducts,
+  getCompareProducts,
+  getCompareProductsUpdatedEventName,
 } from "@/lib/storage";
 import { ProductRecommendation } from "@/lib/types";
+import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -18,12 +20,12 @@ export default function ComparePage() {
 
   useEffect(() => {
     const refreshProducts = () => {
-      setProducts(getSessionRecommendations());
+      setProducts(getCompareProducts());
     };
 
     refreshProducts();
 
-    const eventName = getSessionRecommendationsUpdatedEventName();
+    const eventName = getCompareProductsUpdatedEventName();
 
     window.addEventListener(eventName, refreshProducts);
     window.addEventListener("storage", refreshProducts);
@@ -33,6 +35,11 @@ export default function ComparePage() {
       window.removeEventListener("storage", refreshProducts);
     };
   }, []);
+
+  const handleClearCompare = () => {
+    clearCompareProducts();
+    setProducts([]);
+  };
 
   return (
     <>
@@ -49,9 +56,20 @@ export default function ComparePage() {
                 Side-by-side comparison
               </h1>
               <p className="lead text-light-emphasis mb-0">
-                Compare recommended products across price, match score, strengths,
-                and tradeoffs before making a decision.
+                Compare the products you selected across price, match score,
+                strengths, and tradeoffs before making a decision.
               </p>
+            </Col>
+
+            <Col
+              lg={4}
+              className="d-flex justify-content-lg-end align-items-start mt-3 mt-lg-0"
+            >
+              {products.length > 0 && (
+                <Button variant="outline-danger" onClick={handleClearCompare}>
+                  Clear Compare
+                </Button>
+              )}
             </Col>
           </Row>
 
@@ -66,10 +84,10 @@ export default function ComparePage() {
               ) : (
                 <Card className="shadow-sm border-0">
                   <Card.Body className="p-4">
-                    <h2 className="h5 mb-2">No products to compare yet</h2>
+                    <h2 className="h5 mb-2">No products selected yet</h2>
                     <p className="text-muted mb-0">
-                      Go back to the homepage, ask Purchase Pilot for product
-                      recommendations, and then open Compare again.
+                      Go back to the homepage and click Compare on the products
+                      you want to evaluate side by side.
                     </p>
                   </Card.Body>
                 </Card>
@@ -83,7 +101,7 @@ export default function ComparePage() {
                 <Card.Body>
                   <Card.Title>Why this matters</Card.Title>
                   <Card.Text>
-                    Users often struggle to compare product tradeoffs across many tabs.
+                    Users often struggle to compare tradeoffs across many tabs.
                     This view reduces that friction.
                   </Card.Text>
                 </Card.Body>
@@ -95,8 +113,8 @@ export default function ComparePage() {
                 <Card.Body>
                   <Card.Title>What users can scan</Card.Title>
                   <Card.Text>
-                    Price, match score, pros, cons, and recommendation reasoning are
-                    visible in one place.
+                    Price, match score, pros, cons, and recommendation reasoning
+                    are visible in one place.
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -107,8 +125,8 @@ export default function ComparePage() {
                 <Card.Body>
                   <Card.Title>MVP purpose</Card.Title>
                   <Card.Text>
-                    This comparison layout helps validate the core shopping flow before
-                    scaling further.
+                    This comparison layout helps validate a more intentional
+                    shopping decision flow.
                   </Card.Text>
                 </Card.Body>
               </Card>
