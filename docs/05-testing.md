@@ -16,6 +16,7 @@
 - verify that Clear Compare resets the Compare page immediately
 - verify that the navbar updates saved-count and compare-count badges automatically when products are added or removed
 - verify that homepage cards show clear Saved and In Compare status badges after user actions
+- verify that the Saved page provides a dedicated Remove action and updates immediately after removal
 ## What to Test
 - Can users understand the app quickly?
 - Are follow-up questions clear?

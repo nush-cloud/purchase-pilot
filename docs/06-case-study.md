@@ -36,6 +36,7 @@ Reduce shopping friction through a guided AI-powered experience.
 - improved the decision flow by letting users explicitly choose which Claude-generated products to compare instead of always comparing the full result set
 - verify that the navbar updates saved-count and compare-count badges automatically when products are added or removed
 - improved product-card clarity by surfacing saved and compare status directly inside recommendation cards
+- improved shortlist management by adding a dedicated Remove action on the Saved page
 ## Outcome
 To be completed during development and testing.
 
