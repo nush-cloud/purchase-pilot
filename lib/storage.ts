@@ -78,6 +78,10 @@ export function getSavedProducts(): ProductRecommendation[] {
   }
 }
 
+export function getSavedProductsCount() {
+  return getSavedProducts().length;
+}
+
 export function setSavedProducts(products: ProductRecommendation[]) {
   if (!isBrowser()) return;
 
@@ -119,6 +123,10 @@ export function getCompareProducts(): ProductRecommendation[] {
   } catch {
     return [];
   }
+}
+
+export function getCompareProductsCount() {
+  return getCompareProducts().length;
 }
 
 export function setCompareProducts(products: ProductRecommendation[]) {

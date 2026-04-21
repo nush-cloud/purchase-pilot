@@ -14,6 +14,7 @@
 - verify that clicking New Search resets the homepage conversation and clears current recommendation state
 - verify that clicking Compare on a product adds only that product to the Compare page
 - verify that Clear Compare resets the Compare page immediately
+- verify that the navbar updates saved-count and compare-count badges automatically when products are added or removed
 ## What to Test
 - Can users understand the app quickly?
 - Are follow-up questions clear?
