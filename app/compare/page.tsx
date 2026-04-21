@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import AppNavbar from "@/components/layout/AppNavbar";
 import ComparisonTable from "@/components/product/ComparisonTable";
-import { getSessionRecommendations } from "@/lib/storage";
+import {
+  getSessionRecommendations,
+  getSessionRecommendationsUpdatedEventName,
+} from "@/lib/storage";
 import { ProductRecommendation } from "@/lib/types";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
@@ -14,7 +17,21 @@ export default function ComparePage() {
   const [products, setProducts] = useState<ProductRecommendation[]>([]);
 
   useEffect(() => {
-    setProducts(getSessionRecommendations());
+    const refreshProducts = () => {
+      setProducts(getSessionRecommendations());
+    };
+
+    refreshProducts();
+
+    const eventName = getSessionRecommendationsUpdatedEventName();
+
+    window.addEventListener(eventName, refreshProducts);
+    window.addEventListener("storage", refreshProducts);
+
+    return () => {
+      window.removeEventListener(eventName, refreshProducts);
+      window.removeEventListener("storage", refreshProducts);
+    };
   }, []);
 
   return (

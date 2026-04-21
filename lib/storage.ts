@@ -3,6 +3,8 @@ import { ProductRecommendation } from "./types";
 const SESSION_RECOMMENDATIONS_KEY = "purchase-pilot-session-recommendations";
 const SAVED_PRODUCTS_KEY = "purchase-pilot-saved-products";
 const SAVED_PRODUCTS_UPDATED_EVENT = "purchase-pilot-saved-updated";
+const SESSION_RECOMMENDATIONS_UPDATED_EVENT =
+  "purchase-pilot-session-recommendations-updated";
 
 function isBrowser() {
   return typeof window !== "undefined";
@@ -13,8 +15,17 @@ function notifySavedProductsUpdated() {
   window.dispatchEvent(new Event(SAVED_PRODUCTS_UPDATED_EVENT));
 }
 
+function notifySessionRecommendationsUpdated() {
+  if (!isBrowser()) return;
+  window.dispatchEvent(new Event(SESSION_RECOMMENDATIONS_UPDATED_EVENT));
+}
+
 export function getSavedProductsUpdatedEventName() {
   return SAVED_PRODUCTS_UPDATED_EVENT;
+}
+
+export function getSessionRecommendationsUpdatedEventName() {
+  return SESSION_RECOMMENDATIONS_UPDATED_EVENT;
 }
 
 export function getSessionRecommendations(): ProductRecommendation[] {
@@ -39,6 +50,7 @@ export function setSessionRecommendations(
     SESSION_RECOMMENDATIONS_KEY,
     JSON.stringify(recommendations)
   );
+  notifySessionRecommendationsUpdated();
 }
 
 export function getSavedProducts(): ProductRecommendation[] {

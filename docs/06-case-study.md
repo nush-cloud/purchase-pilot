@@ -31,6 +31,7 @@ Reduce shopping friction through a guided AI-powered experience.
 - connected Claude-generated homepage recommendations to the Compare and Saved pages so the app behaved like one continuous shopping flow
 - connected Claude-generated homepage recommendations to the Compare and Saved pages so the app behaved like one continuous shopping flow
 - improved the saved-products experience by making shortlist updates reflect immediately in the UI
+- improved homepage usability by auto-scrolling users to recommendation results after each response
 ## Outcome
 To be completed during development and testing.
 

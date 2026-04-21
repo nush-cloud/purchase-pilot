@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AppNavbar from "@/components/layout/AppNavbar";
 import ChatLayout from "@/components/chat/ChatLayout";
 import ProductCard from "@/components/product/ProductCard";
@@ -20,10 +20,24 @@ import { setSessionRecommendations } from "@/lib/storage";
 
 
 export default function HomePage() {
-  const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
-  const [inputValue, setInputValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [recommendations, setRecommendations] = useState<ProductRecommendation[]>([]);
+ const [messages, setMessages] = useState<ChatMessage[]>(mockMessages);
+const [inputValue, setInputValue] = useState("");
+const [isLoading, setIsLoading] = useState(false);
+const [recommendations, setRecommendations] = useState<ProductRecommendation[]>([]);
+const [shouldScrollToResults, setShouldScrollToResults] = useState(false);
+
+const recommendationsRef = useRef<HTMLElement | null>(null);
+
+useEffect(() => {
+  if (!isLoading && shouldScrollToResults && recommendationsRef.current) {
+    recommendationsRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+
+    setShouldScrollToResults(false);
+  }
+}, [isLoading, shouldScrollToResults]);
 
   const handleSend = async () => {
     const trimmedValue = inputValue.trim();
@@ -38,10 +52,10 @@ export default function HomePage() {
 
     const nextMessages = [...messages, userMessage];
 
-    setMessages(nextMessages);
-    setInputValue("");
-    setIsLoading(true);
-
+  setMessages(nextMessages);
+setInputValue("");
+setIsLoading(true);
+setShouldScrollToResults(true);
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -144,7 +158,7 @@ setSessionRecommendations(nextRecommendations);
             </Col>
           </Row>
 
-          <section className="mb-5">
+          <section className="mb-5" ref={recommendationsRef}>
             <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
               <div>
                 <h2 className="h2 fw-bold mb-1">Recommended Products</h2>
