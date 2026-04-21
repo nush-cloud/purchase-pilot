@@ -10,6 +10,8 @@ import SaveButton from "./SaveButton";
 import { ProductRecommendation } from "@/lib/types";
 import {
   addCompareProduct,
+  getCompareProductsUpdatedEventName,
+  getSavedProductsUpdatedEventName,
   isProductCompared,
   isProductSaved,
   removeCompareProduct,
@@ -26,27 +28,40 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [compared, setCompared] = useState(false);
 
   useEffect(() => {
-    setSaved(isProductSaved(product.name));
-    setCompared(isProductCompared(product.name));
+    const refreshStatus = () => {
+      setSaved(isProductSaved(product.name));
+      setCompared(isProductCompared(product.name));
+    };
+
+    refreshStatus();
+
+    const savedEventName = getSavedProductsUpdatedEventName();
+    const compareEventName = getCompareProductsUpdatedEventName();
+
+    window.addEventListener(savedEventName, refreshStatus);
+    window.addEventListener(compareEventName, refreshStatus);
+    window.addEventListener("storage", refreshStatus);
+
+    return () => {
+      window.removeEventListener(savedEventName, refreshStatus);
+      window.removeEventListener(compareEventName, refreshStatus);
+      window.removeEventListener("storage", refreshStatus);
+    };
   }, [product.name]);
 
   const handleSaveToggle = () => {
     if (saved) {
       removeSavedProduct(product.name);
-      setSaved(false);
     } else {
       saveProduct(product);
-      setSaved(true);
     }
   };
 
   const handleCompareToggle = () => {
     if (compared) {
       removeCompareProduct(product.name);
-      setCompared(false);
     } else {
       addCompareProduct(product);
-      setCompared(true);
     }
   };
 
@@ -66,6 +81,13 @@ export default function ProductCard({ product }: ProductCardProps) {
             {product.matchScore}% Match
           </Badge>
         </div>
+
+        {(saved || compared) && (
+          <div className="d-flex gap-2 flex-wrap mb-3">
+            {saved && <Badge bg="success">Saved</Badge>}
+            {compared && <Badge bg="primary">In Compare</Badge>}
+          </div>
+        )}
 
         <Card.Text className="text-muted mb-3">
           {product.description}
